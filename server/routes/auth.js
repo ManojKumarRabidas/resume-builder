@@ -17,7 +17,6 @@ const generateToken = (id) => {
 router.post('/register', async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    console.log("req.body", req.body)
     // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {

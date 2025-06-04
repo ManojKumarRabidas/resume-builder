@@ -35,16 +35,16 @@ const UserSchema = new mongoose.Schema({
       institution: String,
       degree: String,
       field: String,
-      startDate: String,
-      endDate: String,
+      startDate: Date,
+      endDate: Date,
       description: String
     }],
     experience: [{
       company: String,
       position: String,
       location: String,
-      startDate: String,
-      endDate: String,
+      startDate: Date,
+      endDate: Date,
       current: Boolean,
       description: String
     }],
@@ -52,9 +52,26 @@ const UserSchema = new mongoose.Schema({
       technical: [String],
       soft: [String],
       languages: [String]
-    }
+    },
+    projects: [{
+      name: String,
+      description: String,
+      link: String,
+      technologies: [String],
+      highlights: [String]
+    }],
+    certifications: [{
+      name: String,
+      issuer: String,
+      date: Date,
+      link: String
+    }]
   },
   createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
     type: Date,
     default: Date.now
   }

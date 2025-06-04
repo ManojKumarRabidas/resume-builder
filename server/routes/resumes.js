@@ -1,7 +1,8 @@
 import express from 'express';
 import Resume from '../models/Resume.js';
 import { protect } from '../middleware/auth.js';
-
+import generateResume from '../utils/resumeGenerator.js'
+import User from '../models/User.js' // Adjust path to your User model
 const router = express.Router();
 
 // @route   GET /api/resumes
@@ -36,6 +37,27 @@ router.post('/', protect, async (req, res, next) => {
     });
     
     res.status(201).json(resume);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/generate-resume', protect, async (req, res, next) => {
+  try {
+    if(!req.user){
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+    // Assuming user is authenticated and req.user contains user info
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    // Generate the PDF using the user's profile data
+    const pdfBuffer = await generateResume(user.profile);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${user.name}_resume.pdf`);
+    res.send(pdfBuffer);
   } catch (error) {
     next(error);
   }
@@ -118,5 +140,4 @@ router.delete('/:id', protect, async (req, res, next) => {
     next(error);
   }
 });
-
 export default router;

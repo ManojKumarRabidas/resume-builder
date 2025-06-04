@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/User.js';
 import { protect } from '../middleware/auth.js';
+import moment from 'moment';
 
 const router = express.Router();
 
@@ -42,20 +43,50 @@ router.put('/profile', protect, async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
-    
+    // Define date fields for each section of the profile
+    const dateFields = {
+      education: ['startDate', 'endDate'],
+      experience: ['startDate', 'endDate'],
+      certifications: ['date'],
+    };
+    // Function to convert date strings to Date objects
+    function convertDates(data) {
+      const newData = { ...data };
+      for (const [section, fields] of Object.entries(dateFields)) {
+        if (newData[section]) {
+          newData[section] = newData[section].map(item => {
+            const newItem = { ...item };
+            fields.forEach(field => {
+              if (newItem[field]) {
+                // Parse the date string; adjust the format as needed (e.g., 'YYYY-MM-DD')
+                const parsedDate = moment(newItem[field], 'YYYY-MM-DD').toDate();
+                if (isNaN(parsedDate.getTime())) {
+                  throw new Error(`Invalid date format for ${field} in ${section}`);
+                }
+                newItem[field] = parsedDate;
+              }
+            });
+            return newItem;
+          });
+        }
+      }
+      return newData;
+    }
+    // Convert dates in the incoming request body
+    const updatedProfile = convertDates(req.body);
     // Update profile fields
     user.profile = {
       ...user.profile,
-      ...req.body
+      ...updatedProfile
     };
-    
+
     // Update name if it's in the basic info
-    if (req.body.basic && req.body.basic.name) {
-      user.name = req.body.basic.name;
+    if (updatedProfile.basic && updatedProfile.basic.name) {
+      user.name = updatedProfile.basic.name;
     }
-    
+
     await user.save();
-    
+
     res.json({
       success: true,
       profile: user.profile

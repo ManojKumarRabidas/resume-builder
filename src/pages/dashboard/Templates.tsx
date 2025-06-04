@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Check } from 'lucide-react';
 import Button from '../../components/ui/Button';
+import pdfapi from "../../services/pdfapi";
 
 interface Template {
   id: string;
@@ -65,8 +66,26 @@ const Templates: React.FC = () => {
     }
   ];
   
-  const handleSelectTemplate = (templateId: string) => {
-    navigate(`/resumes/create?template=${templateId}`);
+  // const handleSelectTemplate = (templateId: string) => {
+  //   navigate(`/resumes/create?template=${templateId}`);
+  // };
+  const handleSelectTemplate = async (templateId: string) => {
+    try {
+      const response = await pdfapi.get('/api/resumes/generate-resume', {
+        responseType: 'blob', // Important for handling binary data
+      });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'resume.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => window.URL.revokeObjectURL(url), 100); // Delay cleanup to ensure download starts
+    } catch (error) {
+      console.error('Error downloading resume:', error);
+    }
   };
   
   return (
