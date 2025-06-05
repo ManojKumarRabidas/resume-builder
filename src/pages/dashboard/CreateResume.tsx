@@ -31,7 +31,6 @@ const CreateResume: React.FC = () => {
         title: title.trim(),
         template
       });
-      console.log("response.data", response.data)
       showToast('Resume created successfully', 'success');
       navigate(`/resumes/${response.data._id}/edit`);
     } catch (error) {

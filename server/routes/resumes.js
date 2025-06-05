@@ -149,7 +149,6 @@ router.put('/:id', protect, async (req, res, next) => {
      */
     function sanitizeIds(data) {
       const newData = JSON.parse(JSON.stringify(data));
-      console.log("newData", newData)
       for (const section of idFields) {
         if (newData && newData[section]) {
           newData[section] = newData[section].map((item) => {
