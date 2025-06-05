@@ -30,7 +30,7 @@ const Resumes: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await api.get('/api/resumes');
-      setResumes(response.data);
+      setResumes(response.data.resumes);
     } catch (error) {
       console.error('Error fetching resumes:', error);
       showToast('Failed to load resumes', 'error');
@@ -68,7 +68,8 @@ const Resumes: React.FC = () => {
         <Button
           variant="primary"
           leftIcon={<FilePlus className="h-5 w-5" />}
-          onClick={() => navigate('/resumes/create')}
+          // onClick={() => navigate('/resumes/create')}
+          onClick={() => navigate('/templates')}
         >
           Create New Resume
         </Button>
@@ -178,7 +179,8 @@ const Resumes: React.FC = () => {
             <Button
               variant="primary"
               leftIcon={<FilePlus className="h-5 w-5" />}
-              onClick={() => navigate('/resumes/create')}
+              // onClick={() => navigate('/resumes/create')}
+              onClick={() => navigate('/templates')}
             >
               Create Your First Resume
             </Button>

@@ -16,13 +16,15 @@ const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [recentResumes, setRecentResumes] = useState<Resume[]>([]);
+  const [totalResumes, setTotalResumes] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     const fetchRecentResumes = async () => {
       try {
         const response = await api.get('/api/resumes?limit=3');
-        setRecentResumes(response.data);
+        setRecentResumes(response.data.resumes);
+        setTotalResumes(response.data.totalResumes);
       } catch (error) {
         console.error('Error fetching recent resumes:', error);
       } finally {
@@ -48,8 +50,8 @@ const Dashboard: React.FC = () => {
               <FileText className="h-6 w-6" />
             </div>
           </div>
-          <p className="text-3xl font-bold">{isLoading ? '...' : recentResumes.length}</p>
-          <p className="text-gray-500 text-sm mt-1">Resumes created</p>
+          <p className="text-3xl font-bold">{isLoading ? '...' : totalResumes}</p>
+          <p className="text-gray-500 text-sm mt-1">Recently Created Resumes</p>
         </div>
         
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -82,7 +84,8 @@ const Dashboard: React.FC = () => {
               variant="primary"
               leftIcon={<FilePlus className="h-5 w-5" />}
               fullWidth
-              onClick={() => navigate('/resumes/create')}
+              // onClick={() => navigate('/resumes/create')}
+              onClick={() => navigate('/templates')}
             >
               Create Resume
             </Button>
@@ -163,7 +166,8 @@ const Dashboard: React.FC = () => {
             <Button
               variant="primary"
               leftIcon={<FilePlus className="h-5 w-5" />}
-              onClick={() => navigate('/resumes/create')}
+              // onClick={() => navigate('/resumes/create')}
+              onClick={() => navigate('/templates')}
             >
               Create Your First Resume
             </Button>

@@ -66,10 +66,10 @@ const Templates: React.FC = () => {
     }
   ];
   
-  // const handleSelectTemplate = (templateId: string) => {
-  //   navigate(`/resumes/create?template=${templateId}`);
-  // };
-  const handleSelectTemplate = async (templateId: string) => {
+  const handleSelectTemplate = (templateId: string) => {
+    navigate(`/resumes/create?template=${templateId}`);
+  };
+  const handleSelectTemplateNew = async (templateId: string) => {
     try {
       const response = await pdfapi.get('/api/resumes/generate-resume', {
         responseType: 'blob', // Important for handling binary data
@@ -149,7 +149,7 @@ const Templates: React.FC = () => {
         <Button
           variant="outline"
           leftIcon={<FileText className="h-5 w-5" />}
-          onClick={() => navigate('/resumes/create')}
+          onClick={() => navigate(`/resumes/create?template=modern`)}
         >
           Start with Basic Template
         </Button>

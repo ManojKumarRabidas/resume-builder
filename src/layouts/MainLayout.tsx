@@ -62,7 +62,8 @@ const MainLayout: React.FC = () => {
                 variant="primary"
                 leftIcon={<FilePlus className="h-5 w-5" />}
                 fullWidth
-                onClick={() => navigate('/resumes/create')}
+                // onClick={() => navigate('/resumes/create')}
+                onClick={() => navigate('/templates')}
               >
                 Create Resume
               </Button>
@@ -131,10 +132,8 @@ const MainLayout: React.FC = () => {
                 variant="primary"
                 leftIcon={<FilePlus className="h-5 w-5" />}
                 fullWidth
-                onClick={() => {
-                  navigate('/resumes/create');
-                  setIsMobileMenuOpen(false);
-                }}
+                onClick={() => { navigate('/templates'); setIsMobileMenuOpen(false); }}
+                // onClick={() => { navigate('/resumes/create'); setIsMobileMenuOpen(false); }}
               >
                 Create Resume
               </Button>

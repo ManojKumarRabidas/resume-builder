@@ -29,21 +29,9 @@ const CreateResume: React.FC = () => {
       
       const response = await api.post('/api/resumes', {
         title: title.trim(),
-        template,
-        content: {
-          personal: {},
-          education: [],
-          experience: [],
-          skills: {
-            technical: [],
-            soft: [],
-            languages: []
-          },
-          projects: [],
-          certifications: []
-        }
+        template
       });
-      
+      console.log("response.data", response.data)
       showToast('Resume created successfully', 'success');
       navigate(`/resumes/${response.data._id}/edit`);
     } catch (error) {

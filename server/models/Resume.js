@@ -18,29 +18,29 @@ const ResumeSchema = new mongoose.Schema({
     default: 'modern'
   },
   content: {
-    personal: {
+    basic: {
       name: String,
       email: String,
       phone: String,
       location: String,
       website: String,
       title: String,
-      summary: String
+      bio: String
     },
     education: [{
       institution: String,
       degree: String,
       field: String,
-      startDate: String,
-      endDate: String,
+      startDate: Date,
+      endDate: Date,
       description: String
     }],
     experience: [{
       company: String,
       position: String,
       location: String,
-      startDate: String,
-      endDate: String,
+      startDate: Date,
+      endDate: Date,
       current: Boolean,
       description: String,
       highlights: [String]
@@ -60,7 +60,7 @@ const ResumeSchema = new mongoose.Schema({
     certifications: [{
       name: String,
       issuer: String,
-      date: String,
+      date: Date,
       link: String
     }]
   },
