@@ -65,553 +65,1234 @@ const generateResume = (userData, template) => {
         if(template == "modern") {
             documentDefinition = {
                 pageSize: 'A4',
-                pageMargins: [40, 60, 40, 60],
+                pageMargins: [0, 0, 0, 0], // Full bleed for header
                 content: [
-                    // Header
+                    // Modern Header with colored background
                     {
                         stack: [
-                            { text: validatedBasic.name, style: 'header' },
-                            { text: userData.title || 'Not Provided', style: 'subheader' },
                             {
-                                text: [
-                                    validatedBasic.email,
-                                    validatedBasic.phone,
-                                    validatedBasic.location,
-                                    validatedBasic.website || 'Not Provided'
-                                ].filter(val => val !== 'Not Provided').join(' | ') || 'Contact Information Not Provided',
-                                style: 'contactInfo',
-                                margin: [0, 5, 0, 10]
+                                canvas: [
+                                    {
+                                        type: 'rect',
+                                        x: 0,
+                                        y: 0,
+                                        w: 595,
+                                        h: 120,
+                                        color: '#2C3E50'
+                                    }
+                                ]
                             },
-                            { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#2E2E2E' }] }
-                        ],
-                        margin: [0, 0, 0, 20]
-                    },
-                    // Professional Summary
-                    {
-                        stack: [
-                            { text: 'Professional Summary', style: 'sectionHeader' },
-                            { text: validatedBasic.bio, style: 'body', margin: [0, 5, 0, 10] }
+                            {
+                                stack: [
+                                    { 
+                                        text: validatedBasic.name, 
+                                        style: 'headerName',
+                                        margin: [40, -110, 40, 5]
+                                    },
+                                    { 
+                                        text: userData.title || 'Professional', 
+                                        style: 'headerTitle',
+                                        margin: [40, 0, 40, 15]
+                                    },
+                                    {
+                                        columns: [
+                                            { 
+                                                text: validatedBasic.email || 'email@example.com', 
+                                                style: 'headerContact' 
+                                            },
+                                            { 
+                                                text: validatedBasic.phone || 'Phone', 
+                                                style: 'headerContact',
+                                                alignment: 'center'
+                                            },
+                                            { 
+                                                text: validatedBasic.location || 'Location', 
+                                                style: 'headerContact',
+                                                alignment: 'right'
+                                            }
+                                        ],
+                                        margin: [40, 0, 40, 0]
+                                    },
+                                    validatedBasic.website && {
+                                        text: validatedBasic.website,
+                                        style: 'headerWebsite',
+                                        margin: [40, 5, 40, 20]
+                                    }
+                                ].filter(Boolean)
+                            }
                         ]
                     },
-                    // Work Experience
+                    
+                    // Main Content with proper margins
                     {
                         stack: [
-                            { text: 'Work Experience', style: 'sectionHeader' },
-                            ...experience.map(exp => [
-                                { 
-                                    text: `${exp.position || 'Not Provided'} at ${exp.company || 'Not Provided'}, ${exp.location || 'Not Provided'}`, 
-                                    style: 'subheader' 
-                                },
-                                { 
-                                    text: `${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}`, 
-                                    style: 'date' 
-                                },
-                                { text: exp.description || 'Not Provided', style: 'body' },
-                                exp.highlights && exp.highlights.length > 0 ? {
-                                    ul: exp.highlights.slice(0, 3).map(highlight => highlight || 'Not Provided'),
-                                    style: 'bulletPoints'
-                                } : null
-                            ].filter(Boolean))
-                        ],
-                        margin: [0, 10, 0, 10]
-                    },
-                    // Education
-                    {
-                        stack: [
-                            { text: 'Education', style: 'sectionHeader' },
-                            ...education.map(edu => [
-                                { 
-                                    text: `${edu.degree || 'Not Provided'} in ${edu.field || 'Not Provided'}, ${edu.institution || 'Not Provided'}`, 
-                                    style: 'subheader' 
-                                },
-                                { 
-                                    text: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`, 
-                                    style: 'date' 
-                                },
-                                edu.description && { text: edu.description || 'Not Provided', style: 'body' }
-                            ].filter(Boolean))
-                        ],
-                        margin: [0, 10, 0, 10]
-                    },
-                    // Skills
-                    {
-                        stack: [
-                            { text: 'Skills', style: 'sectionHeader' },
+                            // Professional Summary with modern styling
                             {
-                                columns: [
-                                    { text: 'Technical Skills', style: 'subheader' },
-                                    { ul: validatedSkills.technical.slice(0, 8).map(skill => skill || 'Not Provided'), style: 'bulletPoints' }
+                                stack: [
+                                    { 
+                                        text: 'PROFESSIONAL SUMMARY', 
+                                        style: 'modernSectionHeader' 
+                                    },
+                                    {
+                                        canvas: [
+                                            {
+                                                type: 'line',
+                                                x1: 0,
+                                                y1: 0,
+                                                x2: 60,
+                                                y2: 0,
+                                                lineWidth: 3,
+                                                lineColor: '#3498DB'
+                                            }
+                                        ],
+                                        margin: [0, 2, 0, 8]
+                                    },
+                                    { 
+                                        text: validatedBasic.bio || 'Dedicated professional with expertise in delivering exceptional results.',
+                                        style: 'summaryText'
+                                    }
                                 ],
-                                columnGap: 20
+                                margin: [40, 25, 40, 20]
                             },
+
+                            // Work Experience with enhanced layout
                             {
-                                columns: [
-                                    { text: 'Soft Skills', style: 'subheader' },
-                                    { ul: validatedSkills.soft.slice(0, 5).map(skill => skill || 'Not Provided'), style: 'bulletPoints' }
+                                stack: [
+                                    { 
+                                        text: 'WORK EXPERIENCE', 
+                                        style: 'modernSectionHeader' 
+                                    },
+                                    {
+                                        canvas: [
+                                            {
+                                                type: 'line',
+                                                x1: 0,
+                                                y1: 0,
+                                                x2: 60,
+                                                y2: 0,
+                                                lineWidth: 3,
+                                                lineColor: '#3498DB'
+                                            }
+                                        ],
+                                        margin: [0, 2, 0, 12]
+                                    },
+                                    ...experience.map((exp, index) => ({
+                                        stack: [
+                                            {
+                                                columns: [
+                                                    {
+                                                        stack: [
+                                                            { 
+                                                                text: exp.position || 'Position Title', 
+                                                                style: 'jobTitle' 
+                                                            },
+                                                            { 
+                                                                text: exp.company || 'Company Name', 
+                                                                style: 'companyName' 
+                                                            }
+                                                        ],
+                                                        width: '*'
+                                                    },
+                                                    {
+                                                        stack: [
+                                                            { 
+                                                                text: `${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}`, 
+                                                                style: 'dateRange',
+                                                                alignment: 'right'
+                                                            },
+                                                            { 
+                                                                text: exp.location || 'Location', 
+                                                                style: 'jobLocation',
+                                                                alignment: 'right'
+                                                            }
+                                                        ],
+                                                        width: 'auto'
+                                                    }
+                                                ]
+                                            },
+                                            exp.description && { 
+                                                text: exp.description, 
+                                                style: 'jobDescription',
+                                                margin: [0, 8, 0, 5]
+                                            },
+                                            exp.highlights && exp.highlights.length > 0 && {
+                                                ul: exp.highlights.slice(0, 4).map(highlight => highlight || 'Achievement'),
+                                                style: 'achievementsList',
+                                                margin: [0, 5, 0, index < experience.length - 1 ? 15 : 0]
+                                            }
+                                        ].filter(Boolean)
+                                    }))
                                 ],
-                                columnGap: 20
+                                margin: [40, 0, 40, 20]
                             },
+
+                            // Two-column layout for Skills and Education
                             {
                                 columns: [
-                                    { text: 'Languages', style: 'subheader' },
-                                    { ul: validatedSkills.languages.slice(0, 5).map(lang => lang || 'Not Provided'), style: 'bulletPoints' }
+                                    // Left Column - Skills
+                                    {
+                                        stack: [
+                                            { 
+                                                text: 'SKILLS', 
+                                                style: 'modernSectionHeader' 
+                                            },
+                                            {
+                                                canvas: [
+                                                    {
+                                                        type: 'line',
+                                                        x1: 0,
+                                                        y1: 0,
+                                                        x2: 40,
+                                                        y2: 0,
+                                                        lineWidth: 3,
+                                                        lineColor: '#3498DB'
+                                                    }
+                                                ],
+                                                margin: [0, 2, 0, 8]
+                                            },
+                                            validatedSkills.technical.length > 0 && {
+                                                stack: [
+                                                    { text: 'Technical', style: 'skillCategory' },
+                                                    { 
+                                                        text: validatedSkills.technical.slice(0, 8).join(' • ') || 'Technical skills',
+                                                        style: 'skillsList'
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 8]
+                                            },
+                                            validatedSkills.soft.length > 0 && {
+                                                stack: [
+                                                    { text: 'Soft Skills', style: 'skillCategory' },
+                                                    { 
+                                                        text: validatedSkills.soft.slice(0, 6).join(' • ') || 'Soft skills',
+                                                        style: 'skillsList'
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 8]
+                                            },
+                                            validatedSkills.languages.length > 0 && {
+                                                stack: [
+                                                    { text: 'Languages', style: 'skillCategory' },
+                                                    { 
+                                                        text: validatedSkills.languages.slice(0, 4).join(' • ') || 'Languages',
+                                                        style: 'skillsList'
+                                                    }
+                                                ]
+                                            }
+                                        ].filter(Boolean),
+                                        width: '48%'
+                                    },
+                                    
+                                    // Right Column - Education
+                                    {
+                                        stack: [
+                                            { 
+                                                text: 'EDUCATION', 
+                                                style: 'modernSectionHeader' 
+                                            },
+                                            {
+                                                canvas: [
+                                                    {
+                                                        type: 'line',
+                                                        x1: 0,
+                                                        y1: 0,
+                                                        x2: 40,
+                                                        y2: 0,
+                                                        lineWidth: 3,
+                                                        lineColor: '#3498DB'
+                                                    }
+                                                ],
+                                                margin: [0, 2, 0, 8]
+                                            },
+                                            ...education.map(edu => ({
+                                                stack: [
+                                                    { 
+                                                        text: `${edu.degree || 'Degree'} in ${edu.field || 'Field'}`, 
+                                                        style: 'degreeTitle' 
+                                                    },
+                                                    { 
+                                                        text: edu.institution || 'Institution Name', 
+                                                        style: 'institutionName' 
+                                                    },
+                                                    { 
+                                                        text: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`, 
+                                                        style: 'educationDate' 
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 10]
+                                            }))
+                                        ].filter(Boolean),
+                                        width: '48%'
+                                    }
                                 ],
-                                columnGap: 20
+                                columnGap: 20,
+                                margin: [40, 0, 40, 20]
+                            },
+
+                            // Projects Section (if exists)
+                            projects.length > 0 && {
+                                stack: [
+                                    { 
+                                        text: 'PROJECTS', 
+                                        style: 'modernSectionHeader' 
+                                    },
+                                    {
+                                        canvas: [
+                                            {
+                                                type: 'line',
+                                                x1: 0,
+                                                y1: 0,
+                                                x2: 60,
+                                                y2: 0,
+                                                lineWidth: 3,
+                                                lineColor: '#3498DB'
+                                            }
+                                        ],
+                                        margin: [0, 2, 0, 8]
+                                    },
+                                    ...projects.slice(0, 3).map(proj => ({
+                                        stack: [
+                                            { 
+                                                text: proj.name || 'Project Name', 
+                                                style: 'projectTitle' 
+                                            },
+                                            { 
+                                                text: proj.description || 'Project description and key achievements.',
+                                                style: 'projectDescription' 
+                                            },
+                                            proj.technologies && {
+                                                text: `Technologies: ${proj.technologies.join(', ')}`,
+                                                style: 'projectTech'
+                                            }
+                                        ].filter(Boolean),
+                                        margin: [0, 0, 0, 12]
+                                    }))
+                                ],
+                                margin: [40, 0, 40, 20]
+                            },
+
+                            // Certifications Section (if exists)
+                            certifications.length > 0 && {
+                                stack: [
+                                    { 
+                                        text: 'CERTIFICATIONS', 
+                                        style: 'modernSectionHeader' 
+                                    },
+                                    {
+                                        canvas: [
+                                            {
+                                                type: 'line',
+                                                x1: 0,
+                                                y1: 0,
+                                                x2: 60,
+                                                y2: 0,
+                                                lineWidth: 3,
+                                                lineColor: '#3498DB'
+                                            }
+                                        ],
+                                        margin: [0, 2, 0, 8]
+                                    },
+                                    {
+                                        columns: certifications.slice(0, 4).map(cert => ({
+                                            stack: [
+                                                { 
+                                                    text: cert.name || 'Certification Name', 
+                                                    style: 'certTitle' 
+                                                },
+                                                { 
+                                                    text: cert.issuer || 'Issuing Organization', 
+                                                    style: 'certIssuer' 
+                                                },
+                                                { 
+                                                    text: formatDate(cert.date) || 'Date', 
+                                                    style: 'certDate' 
+                                                }
+                                            ],
+                                            width: '*'
+                                        })),
+                                        columnGap: 15
+                                    }
+                                ],
+                                margin: [40, 0, 40, 30]
                             }
-                        ],
-                        margin: [0, 10, 0, 10]
-                    },
-                    // Projects
-                    projects.length > 0 && {
-                        stack: [
-                            { text: 'Projects', style: 'sectionHeader' },
-                            ...projects.slice(0, 2).map(proj => [
-                                { text: proj.name || 'Not Provided', style: 'subheader' },
-                                { text: proj.description || 'Not Provided', style: 'body' },
-                                { text: `Technologies: ${proj.technologies?.join(', ') || 'Not Provided'}`, style: 'body' }
-                            ])
-                        ],
-                        margin: [0, 10, 0, 10]
-                    },
-                    // Certifications
-                    certifications.length > 0 && {
-                        stack: [
-                            { text: 'Certifications', style: 'sectionHeader' },
-                            ...certifications.slice(0, 2).map(cert => [
-                                { text: `${cert.name || 'Not Provided'} by ${cert.issuer || 'Not Provided'}`, style: 'subheader' },
-                                { text: formatDate(cert.date) || 'Not Provided', style: 'date' }
-                            ])
-                        ],
-                        margin: [0, 10, 0, 10]
+                        ].filter(Boolean)
                     }
-                ].filter(Boolean),
+                ],
+                
                 styles: {
-                    header: { 
-                        fontSize: 24, 
+                    // Header Styles
+                    headerName: { 
+                        fontSize: 28, 
                         bold: true, 
-                        alignment: 'center', 
-                        color: '#2E2E2E',
-                        font: 'Roboto'
+                        color: '#FFFFFF',
+                        alignment: 'center'
                     },
-                    subheader: { 
-                        fontSize: 12, 
+                    headerTitle: { 
+                        fontSize: 16, 
+                        color: '#ECF0F1',
+                        alignment: 'center'
+                    },
+                    headerContact: { 
+                        fontSize: 11, 
+                        color: '#BDC3C7'
+                    },
+                    headerWebsite: { 
+                        fontSize: 11, 
+                        color: '#3498DB',
+                        alignment: 'center',
+                        decoration: 'underline'
+                    },
+                    
+                    // Section Headers
+                    modernSectionHeader: { 
+                        fontSize: 13, 
                         bold: true, 
-                        color: '#2E2E2E', 
-                        margin: [0, 5, 0, 3],
-                        font: 'Roboto'
+                        color: '#2C3E50'
                     },
-                    contactInfo: { 
+                    
+                    // Summary
+                    summaryText: { 
+                        fontSize: 11, 
+                        lineHeight: 1.5, 
+                        color: '#34495E',
+                        alignment: 'justify'
+                    },
+                    
+                    // Work Experience
+                    jobTitle: { 
+                        fontSize: 13, 
+                        bold: true, 
+                        color: '#2C3E50'
+                    },
+                    companyName: { 
+                        fontSize: 11, 
+                        color: '#3498DB',
+                        italics: true,
+                        margin: [0, 2, 0, 0]
+                    },
+                    dateRange: { 
                         fontSize: 10, 
-                        alignment: 'center', 
-                        color: '#555555',
-                        font: 'Roboto'
+                        color: '#7F8C8D',
+                        bold: true
                     },
-                    sectionHeader: { 
-                        fontSize: 14, 
-                        bold: true, 
-                        color: '#1A3C5A', 
-                        margin: [0, 15, 0, 8],
-                        decoration: 'underline',
-                        decorationStyle: 'solid',
-                        decorationColor: '#1A3C5A',
-                        font: 'Roboto'
+                    jobLocation: { 
+                        fontSize: 10, 
+                        color: '#95A5A6',
+                        margin: [0, 2, 0, 0]
                     },
-                    body: { 
+                    jobDescription: { 
                         fontSize: 10, 
                         lineHeight: 1.4, 
-                        color: '#333333',
-                        font: 'Roboto'
+                        color: '#34495E',
+                        alignment: 'justify'
                     },
-                    date: { 
+                    achievementsList: { 
                         fontSize: 10, 
-                        italics: true, 
-                        color: '#555555', 
-                        margin: [0, 2, 0, 5],
-                        font: 'Roboto'
+                        lineHeight: 1.3, 
+                        color: '#2C3E50',
+                        margin: [15, 0, 0, 0]
                     },
-                    bulletPoints: { 
+                    
+                    // Skills
+                    skillCategory: { 
+                        fontSize: 11, 
+                        bold: true, 
+                        color: '#3498DB'
+                    },
+                    skillsList: { 
                         fontSize: 10, 
-                        margin: [10, 2, 0, 5], 
-                        color: '#333333',
-                        font: 'Roboto'
+                        lineHeight: 1.3, 
+                        color: '#34495E',
+                        margin: [0, 3, 0, 0]
+                    },
+                    
+                    // Education
+                    degreeTitle: { 
+                        fontSize: 11, 
+                        bold: true, 
+                        color: '#2C3E50'
+                    },
+                    institutionName: { 
+                        fontSize: 10, 
+                        color: '#3498DB',
+                        italics: true,
+                        margin: [0, 2, 0, 0]
+                    },
+                    educationDate: { 
+                        fontSize: 9, 
+                        color: '#7F8C8D',
+                        margin: [0, 2, 0, 0]
+                    },
+                    
+                    // Projects
+                    projectTitle: { 
+                        fontSize: 11, 
+                        bold: true, 
+                        color: '#2C3E50'
+                    },
+                    projectDescription: { 
+                        fontSize: 10, 
+                        lineHeight: 1.3, 
+                        color: '#34495E',
+                        margin: [0, 3, 0, 2]
+                    },
+                    projectTech: { 
+                        fontSize: 9, 
+                        color: '#3498DB',
+                        italics: true
+                    },
+                    
+                    // Certifications
+                    certTitle: { 
+                        fontSize: 10, 
+                        bold: true, 
+                        color: '#2C3E50'
+                    },
+                    certIssuer: { 
+                        fontSize: 9, 
+                        color: '#3498DB',
+                        margin: [0, 2, 0, 0]
+                    },
+                    certDate: { 
+                        fontSize: 9, 
+                        color: '#7F8C8D',
+                        margin: [0, 1, 0, 0]
                     }
                 },
+                
                 defaultStyle: { 
-                    font: 'Roboto', 
                     fontSize: 10, 
-                    color: '#333333'
+                    color: '#2C3E50'
                 }
             };
         } else if(template == "minimal") {
             documentDefinition = {
                 pageSize: 'A4',
-                pageMargins: [30, 40, 30, 40],
+                pageMargins: [50, 50, 50, 50],
                 content: [
                     // Header
                     {
                         stack: [
-                            { text: validatedBasic.name, style: 'header' },
+                            { 
+                                text: validatedBasic.name, 
+                                style: 'name' 
+                            },
+                            { 
+                                text: userData.title || 'Professional', 
+                                style: 'title' 
+                            },
                             {
                                 text: [
-                                    validatedBasic.email,
-                                    validatedBasic.phone,
-                                    validatedBasic.location
-                                ].filter(val => val !== 'Not Provided').join(' | ') || 'Contact Information Not Provided',
-                                style: 'contactInfo',
-                                margin: [0, 5, 0, 10]
+                                    validatedBasic.email || 'email@example.com',
+                                    ' | ',
+                                    validatedBasic.phone || 'Phone',
+                                    ' | ',
+                                    validatedBasic.location || 'Location'
+                                ].join(''),
+                                style: 'contact'
                             },
-                            { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 535, y2: 0, lineWidth: 0.5, lineColor: '#4A4A4A' }] }
+                            validatedBasic.website && {
+                                text: validatedBasic.website,
+                                style: 'website'
+                            }
+                        ],
+                        margin: [0, 0, 0, 20]
+                    },
+
+                    // Professional Summary
+                    validatedBasic.bio && {
+                        stack: [
+                            { text: 'SUMMARY', style: 'sectionHeader' },
+                            { text: validatedBasic.bio, style: 'bodyText' }
                         ],
                         margin: [0, 0, 0, 15]
                     },
-                    // Professional Summary
-                    {
-                        stack: [
-                            { text: 'Summary', style: 'sectionHeader' },
-                            { text: validatedBasic.bio, style: 'body', margin: [0, 5, 0, 10] }
-                        ]
-                    },
+
                     // Work Experience
-                    {
+                    experience.length > 0 && {
                         stack: [
-                            { text: 'Experience', style: 'sectionHeader' },
-                            ...experience.map(exp => [
-                                { 
-                                    text: `${exp.position || 'Not Provided'} - ${exp.company || 'Not Provided'}`, 
-                                    style: 'subheader' 
-                                },
-                                { 
-                                    text: `${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}`, 
-                                    style: 'date' 
-                                },
-                                exp.highlights && exp.highlights.length > 0 ? {
-                                    ul: exp.highlights.slice(0, 3).map(highlight => highlight || 'Not Provided'),
-                                    style: 'bulletPoints'
-                                } : { text: 'Not Provided', style: 'body' }
-                            ].filter(Boolean))
+                            { text: 'EXPERIENCE', style: 'sectionHeader' },
+                            ...experience.map(exp => ({
+                                stack: [
+                                    {
+                                        columns: [
+                                            { 
+                                                text: `${exp.position || 'Position'} - ${exp.company || 'Company'}`, 
+                                                style: 'jobTitle',
+                                                width: '*'
+                                            },
+                                            { 
+                                                text: `${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}`, 
+                                                style: 'dateText',
+                                                alignment: 'right',
+                                                width: 'auto'
+                                            }
+                                        ]
+                                    },
+                                    exp.location && { 
+                                        text: exp.location, 
+                                        style: 'locationText' 
+                                    },
+                                    exp.description && { 
+                                        text: exp.description, 
+                                        style: 'bodyText',
+                                        margin: [0, 3, 0, 0]
+                                    },
+                                    exp.highlights && exp.highlights.length > 0 && {
+                                        ul: exp.highlights.slice(0, 3),
+                                        style: 'bulletList'
+                                    }
+                                ].filter(Boolean),
+                                margin: [0, 0, 0, 10]
+                            }))
                         ],
-                        margin: [0, 10, 0, 10]
+                        margin: [0, 0, 0, 15]
                     },
+
                     // Education
-                    {
+                    education.length > 0 && {
                         stack: [
-                            { text: 'Education', style: 'sectionHeader' },
-                            ...education.map(edu => [
-                                { 
-                                    text: `${edu.degree || 'Not Provided'}, ${edu.institution || 'Not Provided'}`, 
-                                    style: 'subheader' 
-                                },
-                                { 
-                                    text: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`, 
-                                    style: 'date' 
-                                }
-                            ].filter(Boolean))
-                        ],
-                        margin: [0, 10, 0, 10]
-                    },
-                    // Skills
-                    {
-                        stack: [
-                            { text: 'Skills', style: 'sectionHeader' },
-                            {
-                                ul: [
-                                    ...validatedSkills.technical.slice(0, 6).map(skill => skill || 'Not Provided'),
-                                    ...validatedSkills.soft.slice(0, 4).map(skill => skill || 'Not Provided'),
-                                    ...validatedSkills.languages.slice(0, 3).map(lang => lang || 'Not Provided')
+                            { text: 'EDUCATION', style: 'sectionHeader' },
+                            ...education.map(edu => ({
+                                columns: [
+                                    {
+                                        text: `${edu.degree || 'Degree'} - ${edu.institution || 'Institution'}`,
+                                        style: 'jobTitle',
+                                        width: '*'
+                                    },
+                                    {
+                                        text: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`,
+                                        style: 'dateText',
+                                        alignment: 'right',
+                                        width: 'auto'
+                                    }
                                 ],
-                                style: 'bulletPoints'
-                            }
+                                margin: [0, 0, 0, 5]
+                            }))
                         ],
-                        margin: [0, 10, 0, 10]
+                        margin: [0, 0, 0, 15]
+                    },
+
+                    // Skills
+                    (validatedSkills.technical.length > 0 || validatedSkills.soft.length > 0) && {
+                        stack: [
+                            { text: 'SKILLS', style: 'sectionHeader' },
+                            validatedSkills.technical.length > 0 && {
+                                text: `Technical: ${validatedSkills.technical.slice(0, 8).join(', ')}`,
+                                style: 'bodyText',
+                                margin: [0, 0, 0, 3]
+                            },
+                            validatedSkills.soft.length > 0 && {
+                                text: `Soft Skills: ${validatedSkills.soft.slice(0, 6).join(', ')}`,
+                                style: 'bodyText',
+                                margin: [0, 0, 0, 3]
+                            },
+                            validatedSkills.languages.length > 0 && {
+                                text: `Languages: ${validatedSkills.languages.slice(0, 4).join(', ')}`,
+                                style: 'bodyText'
+                            }
+                        ].filter(Boolean),
+                        margin: [0, 0, 0, 15]
+                    },
+
+                    // Projects
+                    projects.length > 0 && {
+                        stack: [
+                            { text: 'PROJECTS', style: 'sectionHeader' },
+                            ...projects.slice(0, 2).map(proj => ({
+                                stack: [
+                                    { 
+                                        text: proj.name || 'Project Name', 
+                                        style: 'jobTitle' 
+                                    },
+                                    { 
+                                        text: proj.description || 'Project description',
+                                        style: 'bodyText',
+                                        margin: [0, 2, 0, 0]
+                                    },
+                                    proj.technologies && {
+                                        text: `Technologies: ${proj.technologies.join(', ')}`,
+                                        style: 'techText'
+                                    }
+                                ].filter(Boolean),
+                                margin: [0, 0, 0, 8]
+                            }))
+                        ],
+                        margin: [0, 0, 0, 15]
+                    },
+
+                    // Certifications
+                    certifications.length > 0 && {
+                        stack: [
+                            { text: 'CERTIFICATIONS', style: 'sectionHeader' },
+                            ...certifications.slice(0, 3).map(cert => ({
+                                columns: [
+                                    {
+                                        text: `${cert.name || 'Certification'} - ${cert.issuer || 'Issuer'}`,
+                                        style: 'jobTitle',
+                                        width: '*'
+                                    },
+                                    {
+                                        text: formatDate(cert.date) || 'Date',
+                                        style: 'dateText',
+                                        alignment: 'right',
+                                        width: 'auto'
+                                    }
+                                ],
+                                margin: [0, 0, 0, 3]
+                            }))
+                        ]
                     }
                 ].filter(Boolean),
+                
                 styles: {
-                    header: { 
-                        fontSize: 22, 
+                    name: { 
+                        fontSize: 20, 
                         bold: true, 
-                        alignment: 'left', 
-                        color: '#333333',
-                        font: 'Roboto',
-                        margin: [0, 0, 0, 5]
+                        alignment: 'center',
+                        color: '#000000'
                     },
-                    contactInfo: { 
-                        fontSize: 9, 
-                        alignment: 'left', 
+                    title: { 
+                        fontSize: 12, 
+                        alignment: 'center',
                         color: '#666666',
-                        font: 'Roboto'
+                        margin: [0, 3, 0, 5]
+                    },
+                    contact: { 
+                        fontSize: 10, 
+                        alignment: 'center',
+                        color: '#333333'
+                    },
+                    website: { 
+                        fontSize: 10, 
+                        alignment: 'center',
+                        color: '#0066CC',
+                        margin: [0, 3, 0, 0]
                     },
                     sectionHeader: { 
                         fontSize: 12, 
-                        bold: true, 
-                        color: '#333333', 
-                        margin: [0, 10, 0, 5],
-                        font: 'Roboto'
+                        bold: true,
+                        color: '#000000',
+                        margin: [0, 0, 0, 5]
                     },
-                    subheader: { 
+                    jobTitle: { 
                         fontSize: 11, 
-                        bold: true, 
-                        color: '#333333', 
-                        margin: [0, 5, 0, 2],
-                        font: 'Roboto'
+                        bold: true,
+                        color: '#000000'
                     },
-                    body: { 
-                        fontSize: 9, 
-                        lineHeight: 1.3, 
-                        color: '#4A4A4A',
-                        font: 'Roboto'
+                    bodyText: { 
+                        fontSize: 10,
+                        color: '#333333',
+                        lineHeight: 1.3
                     },
-                    date: { 
-                        fontSize: 9, 
-                        italics: true, 
-                        color: '#666666', 
-                        margin: [0, 2, 0, 4],
-                        font: 'Roboto'
+                    dateText: { 
+                        fontSize: 10,
+                        color: '#666666'
                     },
-                    bulletPoints: { 
-                        fontSize: 9, 
-                        margin: [10, 2, 0, 4], 
-                        color: '#4A4A4A',
-                        font: 'Roboto'
+                    locationText: { 
+                        fontSize: 9,
+                        color: '#666666',
+                        italics: true
+                    },
+                    bulletList: { 
+                        fontSize: 10,
+                        color: '#333333',
+                        margin: [10, 3, 0, 0]
+                    },
+                    techText: { 
+                        fontSize: 9,
+                        color: '#666666',
+                        italics: true,
+                        margin: [0, 2, 0, 0]
                     }
                 },
+                
                 defaultStyle: { 
-                    font: 'Roboto', 
-                    fontSize: 9, 
-                    color: '#4A4A4A'
+                    fontSize: 10,
+                    color: '#333333'
                 }
             };
         } else if(template == "executive") {
             documentDefinition = {
                 pageSize: 'A4',
-                pageMargins: [40, 50, 40, 50],
-                background: [
-                {
-                    canvas: [
-                    {
-                        type: 'rect',
-                        x: 0,
-                        y: 0,
-                        w: 595.28,
-                        h: 841.89,
-                        color: '#F5F6F5' // Subtle off-white for elegance
-                    }
-                    ]
-                }
-                ],
+                pageMargins: [60, 50, 60, 50],
                 content: [
-                // Header
-                {
-                    stack: [
+                    // Executive Header with refined styling
                     {
-                        text: validatedBasic.name,
-                        style: 'header',
-                        decoration: 'underline',
-                        decorationStyle: 'solid',
-                        decorationColor: '#1B263B'
-                    },
-                    {
-                        text: [
-                        validatedBasic.email,
-                        validatedBasic.phone,
-                        validatedBasic.location
-                        ].filter(val => val !== 'Not Provided').join(' | ') || 'Contact Information Not Provided',
-                        style: 'contactInfo',
-                        margin: [0, 5, 0, 10]
-                    }
-                    ],
-                    margin: [0, 10, 0, 15]
-                },
-                // Professional Summary
-                {
-                    table: {
-                    widths: ['*'],
-                    body: [
-                        [
-                        {
-                            stack: [
-                            { text: 'Summary', style: 'sectionHeader' },
-                            { text: validatedBasic.bio, style: 'body', margin: [0, 5, 0, 5] }
-                            ],
-                            fillColor: '#FFFFFF',
-                            margin: [10, 10, 10, 10]
-                        }
-                        ]
-                    ]
-                    },
-                    layout: {
-                    hLineWidth: () => 0.5,
-                    vLineWidth: () => 0.5,
-                    hLineColor: () => '#1B263B',
-                    vLineColor: () => '#1B263B',
-                    paddingTop: () => 5,
-                    paddingBottom: () => 5
-                    },
-                    margin: [0, 10, 0, 10]
-                },
-                // Work Experience
-                {
-                    table: {
-                    widths: ['*'],
-                    body: [
-                        [
-                        {
-                            stack: [
-                            { text: 'Experience', style: 'sectionHeader' },
-                            ...experience.map(exp => [
-                                { 
-                                text: `${exp.position || 'Not Provided'} - ${exp.company || 'Not Provided'}`, 
-                                style: 'subheader' 
-                                },
-                                { 
-                                text: `${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}`, 
-                                style: 'date' 
-                                },
-                                exp.highlights && exp.highlights.length > 0 ? {
-                                ul: exp.highlights.slice(0, 3).map(highlight => highlight || 'Not Provided'),
-                                style: 'bulletPoints'
-                                } : { text: 'Not Provided', style: 'body' }
-                            ].filter(Boolean))
-                            ],
-                            fillColor: '#FFFFFF',
-                            margin: [10, 10, 10, 10]
-                        }
-                        ]
-                    ]
-                    },
-                    layout: {
-                    hLineWidth: () => 0.5,
-                    vLineWidth: () => 0.5,
-                    hLineColor: () => '#1B263B',
-                    vLineColor: () => '#1B263B',
-                    paddingTop: () => 5,
-                    paddingBottom: () => 5
-                    },
-                    margin: [0, 10, 0, 10]
-                },
-                // Education
-                {
-                    table: {
-                    widths: ['*'],
-                    body: [
-                        [
-                        {
-                            stack: [
-                            { text: 'Education', style: 'sectionHeader' },
-                            ...education.map(edu => [
-                                { 
-                                text: `${edu.degree || 'Not Provided'}, ${edu.institution || 'Not Provided'}`, 
-                                style: 'subheader' 
-                                },
-                                { 
-                                text: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`, 
-                                style: 'date' 
-                                }
-                            ].filter(Boolean))
-                            ],
-                            fillColor: '#FFFFFF',
-                            margin: [10, 10, 10, 10]
-                        }
-                        ]
-                    ]
-                    },
-                    layout: {
-                    hLineWidth: () => 0.5,
-                    vLineWidth: () => 0.5,
-                    hLineColor: () => '#1B263B',
-                    vLineColor: () => '#1B263B',
-                    paddingTop: () => 5,
-                    paddingBottom: () => 5
-                    },
-                    margin: [0, 10, 0, 10]
-                },
-                // Skills
-                {
-                    table: {
-                    widths: ['*'],
-                    body: [
-                        [
-                        {
-                            stack: [
-                            { text: 'Skills', style: 'sectionHeader' },
+                        stack: [
+                            { 
+                                text: validatedBasic.name.toUpperCase(), 
+                                style: 'executiveName' 
+                            },
+                            { 
+                                text: userData.title || 'Senior Executive', 
+                                style: 'executiveTitle' 
+                            },
+                            // Elegant separator line
+                            {
+                                canvas: [
+                                    {
+                                        type: 'line',
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 475,
+                                        y2: 0,
+                                        lineWidth: 1,
+                                        lineColor: '#8B4513'
+                                    }
+                                ],
+                                margin: [0, 8, 0, 8]
+                            },
+                            // Premium contact layout
                             {
                                 columns: [
-                                { ul: validatedSkills.technical.slice(0, 4).map(skill => skill || 'Not Provided'), style: 'bulletPoints' },
-                                { ul: validatedSkills.soft.slice(0, 4).map(skill => skill || 'Not Provided'), style: 'bulletPoints' },
-                                { ul: validatedSkills.languages.slice(0, 4).map(lang => lang || 'Not Provided'), style: 'bulletPoints' }
-                                ],
-                                columnGap: 10
+                                    {
+                                        text: validatedBasic.email || 'executive@company.com',
+                                        style: 'executiveContact',
+                                        width: '*'
+                                    },
+                                    {
+                                        text: validatedBasic.phone || '+1 (555) 000-0000',
+                                        style: 'executiveContact',
+                                        alignment: 'center',
+                                        width: '*'
+                                    },
+                                    {
+                                        text: validatedBasic.location || 'City, State',
+                                        style: 'executiveContact',
+                                        alignment: 'right',
+                                        width: '*'
+                                    }
+                                ]
+                            },
+                            validatedBasic.website && {
+                                text: validatedBasic.website,
+                                style: 'executiveWebsite',
+                                alignment: 'center',
+                                margin: [0, 5, 0, 0]
                             }
-                            ],
-                            fillColor: '#FFFFFF',
-                            margin: [10, 10, 10, 10]
-                        }
-                        ]
-                    ]
+                        ],
+                        margin: [0, 0, 0, 25]
                     },
-                    layout: {
-                    hLineWidth: () => 0.5,
-                    vLineWidth: () => 0.5,
-                    hLineColor: () => '#1B263B',
-                    vLineColor: () => '#1B263B',
-                    paddingTop: () => 5,
-                    paddingBottom: () => 5
+
+                    // Executive Summary (emphasized)
+                    validatedBasic.bio && {
+                        stack: [
+                            { text: 'EXECUTIVE SUMMARY', style: 'executiveSectionHeader' },
+                            {
+                                canvas: [
+                                    {
+                                        type: 'line',
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 40,
+                                        y2: 0,
+                                        lineWidth: 2,
+                                        lineColor: '#8B4513'
+                                    }
+                                ],
+                                margin: [0, 3, 0, 8]
+                            },
+                            { 
+                                text: validatedBasic.bio, 
+                                style: 'executiveSummary'
+                            }
+                        ],
+                        margin: [0, 0, 0, 20]
                     },
-                    margin: [0, 10, 0, 10]
-                }
+
+                    // Professional Experience (detailed focus)
+                    experience.length > 0 && {
+                        stack: [
+                            { text: 'PROFESSIONAL EXPERIENCE', style: 'executiveSectionHeader' },
+                            {
+                                canvas: [
+                                    {
+                                        type: 'line',
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 40,
+                                        y2: 0,
+                                        lineWidth: 2,
+                                        lineColor: '#8B4513'
+                                    }
+                                ],
+                                margin: [0, 3, 0, 12]
+                            },
+                            ...experience.map((exp, index) => ({
+                                stack: [
+                                    // Premium job header
+                                    {
+                                        columns: [
+                                            {
+                                                stack: [
+                                                    { 
+                                                        text: exp.position?.toUpperCase() || 'SENIOR POSITION', 
+                                                        style: 'executivePosition' 
+                                                    },
+                                                    { 
+                                                        text: exp.company || 'Company Name', 
+                                                        style: 'executiveCompany' 
+                                                    }
+                                                ],
+                                                width: '*'
+                                            },
+                                            {
+                                                stack: [
+                                                    { 
+                                                        text: `${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}`, 
+                                                        style: 'executiveDate',
+                                                        alignment: 'right'
+                                                    },
+                                                    exp.location && { 
+                                                        text: exp.location, 
+                                                        style: 'executiveLocation',
+                                                        alignment: 'right'
+                                                    }
+                                                ].filter(Boolean),
+                                                width: 'auto'
+                                            }
+                                        ]
+                                    },
+                                    // Refined description
+                                    exp.description && { 
+                                        text: exp.description, 
+                                        style: 'executiveDescription',
+                                        margin: [0, 6, 0, 4]
+                                    },
+                                    // Key achievements with premium styling
+                                    exp.highlights && exp.highlights.length > 0 && {
+                                        stack: [
+                                            { text: 'Key Achievements:', style: 'achievementHeader' },
+                                            {
+                                                ul: exp.highlights.slice(0, 4).map(highlight => highlight || 'Strategic achievement'),
+                                                style: 'executiveAchievements'
+                                            }
+                                        ],
+                                        margin: [0, 3, 0, index < experience.length - 1 ? 18 : 12]
+                                    }
+                                ].filter(Boolean)
+                            }))
+                        ],
+                        margin: [0, 0, 0, 20]
+                    },
+
+                    // Two-column layout for supporting sections
+                    {
+                        columns: [
+                            // Left Column - Education & Certifications
+                            {
+                                stack: [
+                                    // Education
+                                    education.length > 0 && {
+                                        stack: [
+                                            { text: 'EDUCATION', style: 'executiveSectionHeader' },
+                                            {
+                                                canvas: [
+                                                    {
+                                                        type: 'line',
+                                                        x1: 0,
+                                                        y1: 0,
+                                                        x2: 30,
+                                                        y2: 0,
+                                                        lineWidth: 2,
+                                                        lineColor: '#8B4513'
+                                                    }
+                                                ],
+                                                margin: [0, 3, 0, 8]
+                                            },
+                                            ...education.map(edu => ({
+                                                stack: [
+                                                    { 
+                                                        text: edu.degree || 'Degree', 
+                                                        style: 'executiveDegree' 
+                                                    },
+                                                    { 
+                                                        text: edu.institution || 'Institution', 
+                                                        style: 'executiveInstitution' 
+                                                    },
+                                                    { 
+                                                        text: `${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}`, 
+                                                        style: 'executiveEducationDate' 
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 8]
+                                            }))
+                                        ].filter(Boolean),
+                                        margin: [0, 0, 0, 15]
+                                    },
+                                    
+                                    // Certifications
+                                    certifications.length > 0 && {
+                                        stack: [
+                                            { text: 'CERTIFICATIONS', style: 'executiveSectionHeader' },
+                                            {
+                                                canvas: [
+                                                    {
+                                                        type: 'line',
+                                                        x1: 0,
+                                                        y1: 0,
+                                                        x2: 30,
+                                                        y2: 0,
+                                                        lineWidth: 2,
+                                                        lineColor: '#8B4513'
+                                                    }
+                                                ],
+                                                margin: [0, 3, 0, 8]
+                                            },
+                                            ...certifications.slice(0, 4).map(cert => ({
+                                                stack: [
+                                                    { 
+                                                        text: cert.name || 'Professional Certification', 
+                                                        style: 'executiveCertName' 
+                                                    },
+                                                    { 
+                                                        text: `${cert.issuer || 'Issuing Organization'} • ${formatDate(cert.date) || 'Year'}`, 
+                                                        style: 'executiveCertDetails' 
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 6]
+                                            }))
+                                        ]
+                                    }
+                                ].filter(Boolean),
+                                width: '45%'
+                            },
+                            
+                            // Right Column - Core Competencies & Projects
+                            {
+                                stack: [
+                                    // Core Competencies
+                                    (validatedSkills.technical.length > 0 || validatedSkills.soft.length > 0) && {
+                                        stack: [
+                                            { text: 'CORE COMPETENCIES', style: 'executiveSectionHeader' },
+                                            {
+                                                canvas: [
+                                                    {
+                                                        type: 'line',
+                                                        x1: 0,
+                                                        y1: 0,
+                                                        x2: 30,
+                                                        y2: 0,
+                                                        lineWidth: 2,
+                                                        lineColor: '#8B4513'
+                                                    }
+                                                ],
+                                                margin: [0, 3, 0, 8]
+                                            },
+                                            validatedSkills.technical.length > 0 && {
+                                                stack: [
+                                                    { text: 'Technical Leadership', style: 'competencyCategory' },
+                                                    { 
+                                                        text: validatedSkills.technical.slice(0, 6).join(' • '), 
+                                                        style: 'competencyList' 
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 6]
+                                            },
+                                            validatedSkills.soft.length > 0 && {
+                                                stack: [
+                                                    { text: 'Executive Skills', style: 'competencyCategory' },
+                                                    { 
+                                                        text: validatedSkills.soft.slice(0, 6).join(' • '), 
+                                                        style: 'competencyList' 
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 6]
+                                            },
+                                            validatedSkills.languages.length > 0 && {
+                                                stack: [
+                                                    { text: 'Languages', style: 'competencyCategory' },
+                                                    { 
+                                                        text: validatedSkills.languages.slice(0, 4).join(' • '), 
+                                                        style: 'competencyList' 
+                                                    }
+                                                ]
+                                            }
+                                        ].filter(Boolean),
+                                        margin: [0, 0, 0, 15]
+                                    },
+                                    
+                                    // Strategic Projects
+                                    projects.length > 0 && {
+                                        stack: [
+                                            { text: 'STRATEGIC PROJECTS', style: 'executiveSectionHeader' },
+                                            {
+                                                canvas: [
+                                                    {
+                                                        type: 'line',
+                                                        x1: 0,
+                                                        y1: 0,
+                                                        x2: 30,
+                                                        y2: 0,
+                                                        lineWidth: 2,
+                                                        lineColor: '#8B4513'
+                                                    }
+                                                ],
+                                                margin: [0, 3, 0, 8]
+                                            },
+                                            ...projects.slice(0, 2).map(proj => ({
+                                                stack: [
+                                                    { 
+                                                        text: proj.name || 'Strategic Initiative', 
+                                                        style: 'executiveProjectTitle' 
+                                                    },
+                                                    { 
+                                                        text: proj.description || 'Executive-level project with measurable business impact.',
+                                                        style: 'executiveProjectDesc',
+                                                        margin: [0, 2, 0, 0]
+                                                    }
+                                                ],
+                                                margin: [0, 0, 0, 8]
+                                            }))
+                                        ]
+                                    }
+                                ].filter(Boolean),
+                                width: '45%'
+                            }
+                        ],
+                        columnGap: 30
+                    }
                 ].filter(Boolean),
+                
                 styles: {
-                header: { 
-                    fontSize: 24, 
-                    bold: true, 
-                    alignment: 'center', 
-                    color: '#1B263B',
-                    font: 'Roboto',
-                    margin: [0, 0, 0, 5]
+                    // Executive Header Styles
+                    executiveName: { 
+                        fontSize: 22, 
+                        bold: true, 
+                        alignment: 'center',
+                        color: '#1A1A1A',
+                        letterSpacing: 1
+                    },
+                    executiveTitle: { 
+                        fontSize: 14, 
+                        alignment: 'center',
+                        color: '#8B4513',
+                        margin: [0, 4, 0, 0]
+                    },
+                    executiveContact: { 
+                        fontSize: 10, 
+                        color: '#4A4A4A'
+                    },
+                    executiveWebsite: { 
+                        fontSize: 10, 
+                        color: '#8B4513',
+                        decoration: 'underline'
+                    },
+                    
+                    // Section Headers
+                    executiveSectionHeader: { 
+                        fontSize: 11, 
+                        bold: true,
+                        color: '#1A1A1A',
+                        letterSpacing: 0.5
+                    },
+                    
+                    // Summary
+                    executiveSummary: { 
+                        fontSize: 11,
+                        color: '#2A2A2A',
+                        lineHeight: 1.4,
+                        alignment: 'justify'
+                    },
+                    
+                    // Experience Styles
+                    executivePosition: { 
+                        fontSize: 12, 
+                        bold: true,
+                        color: '#1A1A1A',
+                        letterSpacing: 0.3
+                    },
+                    executiveCompany: { 
+                        fontSize: 11,
+                        color: '#8B4513',
+                        italics: true,
+                        margin: [0, 2, 0, 0]
+                    },
+                    executiveDate: { 
+                        fontSize: 10,
+                        color: '#666666',
+                        bold: true
+                    },
+                    executiveLocation: { 
+                        fontSize: 9,
+                        color: '#888888',
+                        margin: [0, 1, 0, 0]
+                    },
+                    executiveDescription: { 
+                        fontSize: 10,
+                        color: '#333333',
+                        lineHeight: 1.3,
+                        alignment: 'justify'
+                    },
+                    achievementHeader: { 
+                        fontSize: 10,
+                        bold: true,
+                        color: '#8B4513'
+                    },
+                    executiveAchievements: { 
+                        fontSize: 10,
+                        color: '#2A2A2A',
+                        lineHeight: 1.2,
+                        margin: [12, 2, 0, 0]
+                    },
+                    
+                    // Education & Certifications
+                    executiveDegree: { 
+                        fontSize: 10, 
+                        bold: true,
+                        color: '#1A1A1A'
+                    },
+                    executiveInstitution: { 
+                        fontSize: 10,
+                        color: '#8B4513',
+                        margin: [0, 1, 0, 0]
+                    },
+                    executiveEducationDate: { 
+                        fontSize: 9,
+                        color: '#666666',
+                        margin: [0, 1, 0, 0]
+                    },
+                    executiveCertName: { 
+                        fontSize: 10,
+                        bold: true,
+                        color: '#1A1A1A'
+                    },
+                    executiveCertDetails: { 
+                        fontSize: 9,
+                        color: '#666666',
+                        margin: [0, 1, 0, 0]
+                    },
+                    
+                    // Competencies
+                    competencyCategory: { 
+                        fontSize: 10,
+                        bold: true,
+                        color: '#8B4513'
+                    },
+                    competencyList: { 
+                        fontSize: 9,
+                        color: '#333333',
+                        lineHeight: 1.2,
+                        margin: [0, 2, 0, 0]
+                    },
+                    
+                    // Projects
+                    executiveProjectTitle: { 
+                        fontSize: 10,
+                        bold: true,
+                        color: '#1A1A1A'
+                    },
+                    executiveProjectDesc: { 
+                        fontSize: 9,
+                        color: '#444444',
+                        lineHeight: 1.2
+                    }
                 },
-                contactInfo: { 
-                    fontSize: 10, 
-                    alignment: 'center', 
-                    color: '#415A77',
-                    font: 'Roboto'
-                },
-                sectionHeader: { 
-                    fontSize: 14, 
-                    bold: true, 
-                    color: '#1B263B', 
-                    margin: [0, 5, 0, 5],
-                    font: 'Roboto'
-                },
-                subheader: { 
-                    fontSize: 12, 
-                    bold: true, 
-                    color: '#1B263B', 
-                    margin: [0, 5, 0, 3],
-                    font: 'Roboto'
-                },
-                body: { 
-                    fontSize: 10, 
-                    lineHeight: 1.4, 
-                    color: '#2A2A2A',
-                    font: 'Roboto'
-                },
-                date: { 
-                    fontSize: 10, 
-                    italics: true, 
-                    color: '#415A77', 
-                    margin: [0, 2, 0, 5],
-                    font: 'Roboto'
-                },
-                bulletPoints: { 
-                    fontSize: 10, 
-                    margin: [10, 2, 0, 5], 
-                    color: '#2A2A2A',
-                    font: 'Roboto'
-                }
-                },
+                
                 defaultStyle: { 
-                font: 'Roboto', 
-                fontSize: 10, 
-                color: '#2A2A2A'
+                    fontSize: 10,
+                    color: '#333333'
                 }
             };
         } else if(template == "creative") {
@@ -627,7 +1308,7 @@ const generateResume = (userData, template) => {
                                 y: 0,
                                 w: 150,
                                 h: 841.89, // Full A4 page height
-                                color: '#1E3A8A' // Blue background
+                                color: '#5d80e6' // Blue background
                             }
                         ]
                     }
