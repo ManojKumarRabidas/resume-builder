@@ -99,41 +99,33 @@ const Templates: React.FC = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {templates.map((template) => (
-          <div 
-            key={template.id} 
-            className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-all hover:shadow-md"
-          >
-            <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
-              <img 
-                src={template.image} 
-                alt={template.name} 
-                className="w-full h-full object-cover transition-transform hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                <div className="p-4 text-white">
-                  <h3 className="font-bold text-lg">{template.name}</h3>
-                  <p className="text-white/80 text-sm">{template.description}</p>
+          <div key={template.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-all hover:shadow-md">
+            <div className='flex flex-col h-full justify-between'>
+              <div>
+                <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
+                  <img src={template.image} alt={template.name} className="w-full h-full object-cover transition-transform hover:scale-105"/>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+                    <div className="p-4 text-white">
+                      <h3 className="font-bold text-lg">{template.name}</h3>
+                      <p className="text-white/80 text-sm">{template.description}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-4">
+                  <ul className="mb-4 space-y-2">
+                    {template.features.map((feature, index) => (
+                      <li key={index} className="flex items-start">
+                        <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                        <span className="text-sm text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            </div>
-            
-            <div className="p-4">
-              <ul className="mb-4 space-y-2">
-                {template.features.map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <Button
-                variant="primary"
-                fullWidth
-                onClick={() => handleSelectTemplate(template.id)}
-              >
-                Use This Template
-              </Button>
+              <div className="p-4 pt-0">
+                <Button variant="primary" fullWidth onClick={() => handleSelectTemplate(template.id)}>Use This Template</Button>
+              </div>
             </div>
           </div>
         ))}

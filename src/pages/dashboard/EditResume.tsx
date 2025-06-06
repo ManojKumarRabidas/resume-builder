@@ -299,7 +299,7 @@ const EditResume: React.FC = () => {
               leftIcon={<Eye className="h-5 w-5" />}
               onClick={handlePreview}
             >
-              Preview
+              Save & Preview
             </Button>
             <Button
               variant="primary"
@@ -485,15 +485,8 @@ const EditResume: React.FC = () => {
                 fullWidth
               />
             </div>
-            <div className="mt-4">
-              <Button
-                variant="ghost"
-                leftIcon={<Trash2 className="h-5 w-5" />}
-                onClick={() => deleteEducation(index)}
-                className="text-red-600"
-              >
-                Delete
-              </Button>
+            <div className="mt-4 flex justify-end">
+              <Button variant="ghost" leftIcon={<Trash2 className="h-5 w-5" />} onClick={() => deleteEducation(index)} className="text-red-600"> Delete </Button>
             </div>
           </div>
         ))}
@@ -575,7 +568,7 @@ const EditResume: React.FC = () => {
                 Current Position
               </label>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex justify-end">
               <Button
                 variant="ghost"
                 leftIcon={<Trash2 className="h-5 w-5" />}
@@ -733,7 +726,7 @@ const EditResume: React.FC = () => {
                 fullWidth
               />
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex justify-end">
               <Button
                 variant="ghost"
                 leftIcon={<Trash2 className="h-5 w-5" />}
@@ -795,7 +788,7 @@ const EditResume: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex justify-end">
               <Button
                 variant="ghost"
                 leftIcon={<Trash2 className="h-5 w-5" />}

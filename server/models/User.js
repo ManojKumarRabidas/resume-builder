@@ -46,7 +46,8 @@ const UserSchema = new mongoose.Schema({
       startDate: Date,
       endDate: Date,
       current: Boolean,
-      description: String
+      description: String,
+      highlights: [String]
     }],
     skills: {
       technical: [String],

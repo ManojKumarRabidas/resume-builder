@@ -51,7 +51,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           <p className="text-3xl font-bold">{isLoading ? '...' : totalResumes}</p>
-          <p className="text-gray-500 text-sm mt-1">Recently Created Resumes</p>
+          <p className="text-gray-500 text-sm mt-1">Total created resumes</p>
         </div>
         
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -137,7 +137,7 @@ const Dashboard: React.FC = () => {
                       {resume.template.charAt(0).toUpperCase() + resume.template.slice(1)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                      {new Date(resume.updatedAt).toLocaleDateString()}
+                      {new Date(resume.updatedAt).toLocaleDateString("en-GB")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <Button

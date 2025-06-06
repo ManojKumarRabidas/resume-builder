@@ -115,10 +115,10 @@ const Resumes: React.FC = () => {
                       {resume.template.charAt(0).toUpperCase() + resume.template.slice(1)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                      {new Date(resume.createdAt).toLocaleDateString()}
+                      {new Date(resume.createdAt).toLocaleDateString("en-GB")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                      {new Date(resume.updatedAt).toLocaleDateString()}
+                      {new Date(resume.updatedAt).toLocaleDateString("en-GB")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right space-x-1">
                       <Button

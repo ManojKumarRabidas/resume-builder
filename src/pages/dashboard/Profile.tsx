@@ -12,6 +12,7 @@ import {
   X,
   Award,
   FolderGit2,
+  Plus
 } from "lucide-react";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
@@ -210,69 +211,55 @@ const EducationForm: React.FC<{
     <div className="space-y-6">
       {fields.map((field, index) => (
         <div key={field.id} className="p-4 border rounded space-y-4">
+          
           <Input
             label="Institution"
             {...register(`education.${index}.institution`, { required: "Institution is required" })}
           />
-          <Input
-            label="Degree"
-            {...register(`education.${index}.degree`, { required: "Degree is required" })}
-          />
-          <Input
-            label="Field of Study"
-            {...register(`education.${index}.field`)}
-          />
-          <Input
-            label="Start Date"
-            type="date"
-            {...register(`education.${index}.startDate`)}
-          />
-          <Input
-            label="End Date"
-            type="date"
-            {...register(`education.${index}.endDate`)}
-          />
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="col-span-1">
+              <Input
+                label="Degree"
+                {...register(`education.${index}.degree`, { required: "Degree is required" })}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="Field of Study"
+                {...register(`education.${index}.field`)}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="col-span-1">
+              <Input
+                label="Start Date"
+                type="date"
+                {...register(`education.${index}.startDate`)}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="End Date"
+                type="date"
+                {...register(`education.${index}.endDate`)}
+              />
+            </div>
+          </div>
           <textarea
             className="block w-full rounded-md border border-gray-300 py-2 px-3"
             rows={3}
             placeholder="Description"
             {...register(`education.${index}.description`)}
           ></textarea>
-          <button
-            type="button"
-            onClick={() => remove(index)}
-            className="text-red-600 hover:text-red-800"
-          >
-            Remove
-          </button>
+          <div className="flex justify-end">
+            <button type="button" onClick={() => remove(index)} className="text-red-600 hover:text-red-800" > Remove </button>
+          </div>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() =>
-          append({
-            institution: "",
-            degree: "",
-            field: "",
-            startDate: "",
-            endDate: "",
-            description: "",
-          })
-        }
-        className="text-blue-600 hover:text-blue-800"
-      >
-        Add Education
-      </button>
       <div className="flex justify-end">
-        <Button
-          variant="primary"
-          leftIcon={<Save className="h-5 w-5" />}
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isSaving}
-          disabled={isSaving}
-        >
-          Save Education
-        </Button>
+        <Button className="mx-2" variant="outline" leftIcon={<Plus className="h-5 w-5" />} onClick={() => append({ institution: "", degree: "", field: "", startDate: "", endDate: "", description: "",})} >Add Education</Button>
+        <Button variant="primary" leftIcon={<Save className="h-5 w-5" />} onClick={handleSubmit(onSubmit)} isLoading={isSaving} disabled={isSaving}>Save Education</Button>
       </div>
     </div>
   );
@@ -308,25 +295,37 @@ const ExperienceForm: React.FC<{
             label="Company"
             {...register(`experience.${index}.company`, { required: "Company is required" })}
           />
-          <Input
-            label="Position"
-            {...register(`experience.${index}.position`, { required: "Position is required" })}
-          />
-          <Input
-            label="Location"
-            {...register(`experience.${index}.location`)}
-          />
-          <Input
-            label="Start Date"
-            type="date"
-            {...register(`experience.${index}.startDate`)}
-          />
-          <Input
-            label="End Date"
-            type="date"
-            {...register(`experience.${index}.endDate`)}
-            disabled={field.current}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-1">
+              <Input
+                label="Position"
+                {...register(`experience.${index}.position`, { required: "Position is required" })}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="Location"
+                {...register(`experience.${index}.location`)}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-1">
+              <Input
+                label="Start Date"
+                type="date"
+                {...register(`experience.${index}.startDate`)}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="End Date"
+                type="date"
+                {...register(`experience.${index}.endDate`)}
+                disabled={field.current}
+              />
+            </div>
+          </div>
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -346,75 +345,42 @@ const ExperienceForm: React.FC<{
             name={`experience.${index}.highlights`}
             render={({ field }) => (
               <div>
-                <label className="block text-sm font-medium text-gray-700">Highlights</label>
-                {field.value.map((highlight, hIndex) => (
-                  <div key={hIndex} className="flex items-center mb-2">
-                    <Input
-                      value={highlight}
-                      onChange={(e) => {
-                        const newHighlights = [...field.value];
-                        newHighlights[hIndex] = e.target.value;
-                        field.onChange(newHighlights);
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        field.onChange(field.value.filter((_, i) => i !== hIndex));
-                      }}
-                      className="ml-2 text-red-600"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => field.onChange([...field.value, ""])}
-                  className="text-blue-600"
-                >
-                  Add Highlight
-                </button>
+                <label className="block text-sm font-medium text-gray-700 py-2">Highlights</label>
+                <div className="flex flex-wrap gap-4">
+                  {field.value.map((highlight, hIndex) => (
+                    <div key={hIndex} className="flex items-center mb-2 mr-3">
+                      <Input
+                        value={highlight}
+                        onChange={(e) => {
+                          const newHighlights = [...field.value];
+                          newHighlights[hIndex] = e.target.value;
+                          field.onChange(newHighlights);
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          field.onChange(field.value.filter((_, i) => i !== hIndex));
+                        }}
+                        className="ml-2 text-red-600"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button type="button" onClick={() => field.onChange([...field.value, ""])} className="text-blue-600"> Add Highlight</button>
               </div>
             )}
           />
-          <button
-            type="button"
-            onClick={() => remove(index)}
-            className="text-red-600 hover:text-red-800"
-          >
-            Remove
-          </button>
+          <div className="flex justify-end">
+            <button type="button" onClick={() => remove(index)} className="text-red-600 hover:text-red-800"> Remove </button>
+          </div>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() =>
-          append({
-            company: "",
-            position: "",
-            location: "",
-            startDate: "",
-            endDate: "",
-            current: false,
-            description: "",
-            highlights: [],
-          })
-        }
-        className="text-blue-600 hover:text-blue-800"
-      >
-        Add Experience
-      </button>
       <div className="flex justify-end">
-        <Button
-          variant="primary"
-          leftIcon={<Save className="h-5 w-5" />}
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isSaving}
-          disabled={isSaving}
-        >
-          Save Experience
-        </Button>
+        <Button className="mx-2" variant="outline" leftIcon={<Plus className="h-5 w-5" />} onClick={() => append({ company: "", position: "", location: "", startDate: "", endDate: "", current: false, description: "", highlights: []})} >Add Experience</Button>
+        <Button variant="primary" leftIcon={<Save className="h-5 w-5" />} onClick={handleSubmit(onSubmit)} isLoading={isSaving} disabled={isSaving}>Save Experience</Button>
       </div>
     </div>
   );
@@ -494,17 +460,17 @@ const SkillsForm: React.FC<SkillsFormProps> = ({ initialData, onSave }) => {
         <h3 className="text-lg font-medium">Technical Skills</h3>
         {renderSkills("technical", technicalSkills)}
         <div className="flex gap-2">
-          <Input
-            value={newSkill.technical}
-            onChange={(e) => setNewSkill({ ...newSkill, technical: e.target.value })}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addSkills("technical");
-              }
-            }}
-            placeholder="Add technical skills, separated by commas"
-          />
+          <div className="rb-full-available-width">
+            <Input value={newSkill.technical} onChange={(e) => setNewSkill({ ...newSkill, technical: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addSkills("technical");
+                }
+              }}
+              placeholder="Add technical skills, separated by commas"
+            />
+          </div>
           <Button onClick={() => addSkills("technical")}>Add</Button>
         </div>
       </div>
@@ -514,17 +480,19 @@ const SkillsForm: React.FC<SkillsFormProps> = ({ initialData, onSave }) => {
         <h3 className="text-lg font-medium">Soft Skills</h3>
         {renderSkills("soft", softSkills)}
         <div className="flex gap-2">
-          <Input
-            value={newSkill.soft}
-            onChange={(e) => setNewSkill({ ...newSkill, soft: e.target.value })}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addSkills("soft");
-              }
-            }}
-            placeholder="Add soft skills, separated by commas"
-          />
+          <div className="rb-full-available-width">
+            <Input
+              value={newSkill.soft}
+              onChange={(e) => setNewSkill({ ...newSkill, soft: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addSkills("soft");
+                }
+              }}
+              placeholder="Add soft skills, separated by commas"
+            />
+          </div>
           <Button onClick={() => addSkills("soft")}>Add</Button>
         </div>
       </div>
@@ -534,17 +502,19 @@ const SkillsForm: React.FC<SkillsFormProps> = ({ initialData, onSave }) => {
         <h3 className="text-lg font-medium">Languages</h3>
         {renderSkills("languages", languages)}
         <div className="flex gap-2">
-          <Input
-            value={newSkill.languages}
-            onChange={(e) => setNewSkill({ ...newSkill, languages: e.target.value })}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addSkills("languages");
-              }
-            }}
-            placeholder="Add languages, separated by commas"
-          />
+          <div className="rb-full-available-width">
+            <Input
+              value={newSkill.languages}
+              onChange={(e) => setNewSkill({ ...newSkill, languages: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addSkills("languages");
+                }
+              }}
+              placeholder="Add languages, separated by commas"
+            />
+          </div>
           <Button onClick={() => addSkills("languages")}>Add</Button>
         </div>
       </div>
@@ -582,45 +552,53 @@ const ProjectsForm: React.FC<{
     <div className="space-y-6">
       {fields.map((field, index) => (
         <div key={field.id} className="p-4 border rounded space-y-4">
-          <Input
-            label="Project Name"
-            {...register(`projects.${index}.name`, { required: "Project name is required" })}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-1">
+              <Input
+                label="Project Name"
+                {...register(`projects.${index}.name`, { required: "Project name is required" })}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="Link"
+                {...register(`projects.${index}.link`)}
+              />
+            </div>
+          </div>
           <textarea
             className="block w-full rounded-md border border-gray-300 py-2 px-3"
             rows={3}
             placeholder="Description"
             {...register(`projects.${index}.description`)}
           ></textarea>
-          <Input
-            label="Link"
-            {...register(`projects.${index}.link`)}
-          />
           <Controller
             control={control}
             name={`projects.${index}.technologies`}
             render={({ field }) => (
               <div>
-                <label className="block text-sm font-medium text-gray-700">Technologies</label>
-                {field.value.map((tech, tIndex) => (
-                  <div key={tIndex} className="flex items-center mb-2">
-                    <Input
-                      value={tech}
-                      onChange={(e) => {
-                        const newTechs = [...field.value];
-                        newTechs[tIndex] = e.target.value;
-                        field.onChange(newTechs);
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => field.onChange(field.value.filter((_, i) => i !== tIndex))}
-                      className="ml-2 text-red-600"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
-                  </div>
-                ))}
+                <label className="block text-sm font-medium text-gray-700 py-3">Technologies</label>
+                <div className="flex flex-wrap gap-4">
+                  {field.value.map((tech, tIndex) => (
+                    <div key={tIndex} className="flex items-center mb-2">
+                      <Input
+                        value={tech}
+                        onChange={(e) => {
+                          const newTechs = [...field.value];
+                          newTechs[tIndex] = e.target.value;
+                          field.onChange(newTechs);
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => field.onChange(field.value.filter((_, i) => i !== tIndex))}
+                        className="ml-2 text-red-600"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
                 <button
                   type="button"
                   onClick={() => field.onChange([...field.value, ""])}
@@ -636,26 +614,28 @@ const ProjectsForm: React.FC<{
             name={`projects.${index}.highlights`}
             render={({ field }) => (
               <div>
-                <label className="block text-sm font-medium text-gray-700">Highlights</label>
-                {field.value.map((highlight, hIndex) => (
-                  <div key={hIndex} className="flex items-center mb-2">
-                    <Input
-                      value={highlight}
-                      onChange={(e) => {
-                        const newHighlights = [...field.value];
-                        newHighlights[hIndex] = e.target.value;
-                        field.onChange(newHighlights);
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => field.onChange(field.value.filter((_, i) => i !== hIndex))}
-                      className="ml-2 text-red-600"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
-                  </div>
-                ))}
+                <label className="block text-sm font-medium text-gray-700 py-3">Highlights</label>
+                <div className="flex flex-wrap gap-4">
+                  {field.value.map((highlight, hIndex) => (
+                    <div key={hIndex} className="flex items-center mb-2">
+                      <Input
+                        value={highlight}
+                        onChange={(e) => {
+                          const newHighlights = [...field.value];
+                          newHighlights[hIndex] = e.target.value;
+                          field.onChange(newHighlights);
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => field.onChange(field.value.filter((_, i) => i !== hIndex))}
+                        className="ml-2 text-red-600"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
                 <button
                   type="button"
                   onClick={() => field.onChange([...field.value, ""])}
@@ -666,6 +646,7 @@ const ProjectsForm: React.FC<{
               </div>
             )}
           />
+          <div className="flex justify-end">
           <button
             type="button"
             onClick={() => remove(index)}
@@ -673,11 +654,12 @@ const ProjectsForm: React.FC<{
           >
             Remove
           </button>
+          </div>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() =>
+      
+      <div className="flex justify-end">
+        <Button className="mx-2" variant="outline" leftIcon={<Plus className="h-5 w-5" />} onClick={() =>
           append({
             name: "",
             description: "",
@@ -685,21 +667,8 @@ const ProjectsForm: React.FC<{
             technologies: [],
             highlights: [],
           })
-        }
-        className="text-blue-600 hover:text-blue-800"
-      >
-        Add Project
-      </button>
-      <div className="flex justify-end">
-        <Button
-          variant="primary"
-          leftIcon={<Save className="h-5 w-5" />}
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isSaving}
-          disabled={isSaving}
-        >
-          Save Projects
-        </Button>
+        } >Add Projects</Button>
+        <Button variant="primary" leftIcon={<Save className="h-5 w-5" />} onClick={handleSubmit(onSubmit)} isLoading={isSaving} disabled={isSaving}>Save Projects</Button>
       </div>
     </div>
   );
@@ -731,56 +700,51 @@ const CertificationsForm: React.FC<{
     <div className="space-y-6">
       {fields.map((field, index) => (
         <div key={field.id} className="p-4 border rounded space-y-4">
-          <Input
-            label="Certification Name"
-            {...register(`certifications.${index}.name`, { required: "Name is required" })}
-          />
-          <Input
-            label="Issuer"
-            {...register(`certifications.${index}.issuer`, { required: "Issuer is required" })}
-          />
-          <Input
-            label="Date"
-            type="date"
-            {...register(`certifications.${index}.date`)}
-          />
-          <Input
-            label="Link"
-            {...register(`certifications.${index}.link`)}
-          />
-          <button
-            type="button"
-            onClick={() => remove(index)}
-            className="text-red-600 hover:text-red-800"
-          >
-            Remove
-          </button>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-1">
+              <Input
+                label="Certification Name"
+                {...register(`certifications.${index}.name`, { required: "Name is required" })}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="Issuer"
+                {...register(`certifications.${index}.issuer`, { required: "Issuer is required" })}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-1">
+              <Input
+                label="Date"
+                type="date"
+                {...register(`certifications.${index}.date`)}
+              />
+            </div>
+            <div className="col-span-1">
+              <Input
+                label="Link"
+                {...register(`certifications.${index}.link`)}
+              />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button type="button" onClick={() => remove(index)} className="text-red-600 hover:text-red-800"> Remove</button>
+          </div>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() =>
+      
+      <div className="flex justify-end">
+        <Button className="mx-2" variant="outline" leftIcon={<Plus className="h-5 w-5" />} onClick={() =>
           append({
             name: "",
             issuer: "",
             date: "",
             link: "",
           })
-        }
-        className="text-blue-600 hover:text-blue-800"
-      >
-        Add Certification
-      </button>
-      <div className="flex justify-end">
-        <Button
-          variant="primary"
-          leftIcon={<Save className="h-5 w-5" />}
-          onClick={handleSubmit(onSubmit)}
-          isLoading={isSaving}
-          disabled={isSaving}
-        >
-          Save Certifications
-        </Button>
+        } >Add Certifications</Button>
+        <Button variant="primary" leftIcon={<Save className="h-5 w-5" />} onClick={handleSubmit(onSubmit)} isLoading={isSaving} disabled={isSaving}>Save Certifications</Button>
       </div>
     </div>
   );
@@ -818,6 +782,7 @@ const Profile: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await api.get("/api/users/profile");
+      console.log("response", response.data)
       setProfileData({
         basic: { ...profileData.basic, ...response.data.basic },
         education: response.data.education || [],
