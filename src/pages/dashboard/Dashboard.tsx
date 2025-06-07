@@ -201,6 +201,12 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      <footer>
+        <div className="mt-8 text-center text-gray-500 text-sm">
+          Developed by <a href="https://manojkumarrabidas.github.io/portfolio" target='_blank' className="text-blue-600 hover:text-blue-800 font-medium">Manoj Kumar Rabidas</a> |
+          &copy; {new Date().getFullYear()} Resume Builder. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 };

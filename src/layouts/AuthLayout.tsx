@@ -21,13 +21,13 @@ const AuthLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
       {/* Left panel - Branding */}
-      <div className="hidden md:flex md:w-1/2 lg:w-2/3 bg-blue-600 text-white p-8 flex-col justify-between">
+      <div className="hidden md:flex md:w-1/2 lg:w-2/3 bg-blue-600 text-white p-8 flex-col justify-between" style={{ backgroundImage: `url('/images/background-login.png')`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
         <div>
           <div className="flex items-center">
             <FileText className="h-8 w-8 mr-2" />
-            <h1 className="text-2xl font-bold">ResumeBuilder</h1>
+            <h1 className="text-2xl font-bold" style={{textShadow: '1px 1px 1px rgba(0, 0, 0, 0.1), -1px -1px 1px rgba(0, 0, 0, 0.1), 1px -1px 1px rgba(0, 0, 0, 0.1), -1px 1px 1px rgba(0, 0, 0, 0.1)'}}>ResumeBuilder</h1>
           </div>
-          <p className="mt-2 text-blue-100">Create professional resumes in minutes, not hours.</p>
+          <p className="mt-2 font-bold" style={{textShadow: '1px 1px 1px rgba(0, 0, 0, 0.1), -1px -1px 1px rgba(0, 0, 0, 0.1), 1px -1px 1px rgba(0, 0, 0, 0.1), -1px 1px 1px rgba(0, 0, 0, 0.1)'}}>Create professional resumes in minutes, not hours.</p>
         </div>
         
         <div className="mt-auto">
@@ -55,8 +55,12 @@ const AuthLayout: React.FC = () => {
           </div>
         </div>
         
-        <div className="mt-8 text-sm text-blue-200">
+        {/* <div className="mt-8 text-sm text-blue-200">
           © 2025 ResumeBuilder. All rights reserved.
+        </div> */}
+        <div className="mt-8 text-sm text-blue-200">
+          Developed by <a href="https://manojkumarrabidas.github.io/portfolio" target='_blank' className="text-blue-400 hover:text-blue-500 font-medium">Manoj Kumar Rabidas</a> |
+          &copy; {new Date().getFullYear()} Resume Builder. All rights reserved.
         </div>
       </div>
       
