@@ -5,3 +5,7 @@
 .rb-full-available-width{
     width: -webkit-fill-available;
 }
+.rb-text-outline-black {
+  color: transparent;
+  -webkit-text-stroke: 0.2px rgb(0, 0, 0);
+}
